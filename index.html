@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Board</title>
+  <link rel="icon" href="favicon.ico">
+  <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+
+<body x-data="
+      {
+        scrolledFromTop: false
+      }
+    " x-init="window.pageYOffset >= 50 ? scrolledFromTop = true : scrolledFromTop = false"
+  @scroll.window="window.pageYOffset >= 50 ? scrolledFromTop = true : scrolledFromTop = false"
+  class="bg-white dark:bg-black">
+  <script>
+    function showSuccessToast() {
+    Toastify({
+        text: "Сообщение отправлено успешно!",
+        duration: 3000,
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+      }).showToast();
+    }
+
+    function showErrorToast() {
+      Toastify({
+        text: "Ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+        duration: 3000,
+        style: {
+          background: "#de3428",
+        },
+      }).showToast();
+    }
+
+    function showPhoneErrorToast() {
+      Toastify({
+        text: "Пожалуйста, введите корректный номер телефона.",
+        duration: 3000,
+        style: {
+          background: "#de3428",
+        },
+      }).showToast();
+    }
+
+    function toastifyCheck(message) {
+      Toastify({
+        text: message,
+        duration: 3000,
+        style: {
+          background: "#de3428",
+        },
+      }).showToast();
+    }
+  </script>
+  <!-- ===== Header start ===== -->
+  <header x-data="
+        {
+          navbarOpen: false,
+          dropdownOpen: false
+        }
+      "
+    :class="scrolledFromTop ? 'bg-white/80 dark:bg-dark/80  shadow-sticky backdrop-blur-xs ' : ' bg-transparent dark:bg-transparent' "
+    class="fixed top-0 z-50 flex items-center w-full">
+    <div class="container">
+      <div class="relative flex items-center justify-between -mx-4">
+        <div class="max-w-full px-4" style="width: 270px;">
+          <a href="index.html" :class="scrolledFromTop && 'py-4! lg:py-2!' " class="block w-full py-6 lg:py-5">
+            <!-- <img src="src/images/logo/logo.svg" alt="logo" class="w-full dark:hidden"> -->
+            <!-- <img src="src/images/logo/logo-white.svg" alt="logo" class="hidden w-full dark:block"> -->
+            <img src="src/images/logo/logo-white.png" alt="logo" class="w-full hidden dark:block">
+              <img src="src/images/logo/logo.png" alt="logo" class="w-full dark:hidden">
+          </a>
+        </div>
+        <div class="flex items-center justify-end w-full px-4">
+          <div>
+            <button @click="navbarOpen = !navbarOpen" :class="navbarOpen && 'navbarTogglerActive' " id="navbarToggler"
+              class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden">
+              <span :class="navbarOpen && 'rotate-45 top-[7px]' "
+                class="relative my-[6px] block h-[2px] w-[30px] bg-black dark:bg-white"></span>
+              <span :class="navbarOpen && 'opacity-0' "
+                class="relative my-[6px] block h-[2px] w-[30px] bg-black dark:bg-white"></span>
+              <span :class="navbarOpen && 'top-[-8px] rotate-[135deg]' "
+                class="relative my-[6px] block h-[2px] w-[30px] bg-black dark:bg-white"></span>
+            </button>
+            <nav :class="!navbarOpen && 'hidden' " id="navbarCollapse"
+              class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white py-4 px-6 shadow-sm dark:bg-black lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:py-0 lg:shadow-none dark:lg:bg-transparent">
+              <ul class="blcok lg:flex">
+                <li class="text-body-color-2 dark:text-body-color">
+                  <a href="#home"
+                    class="flex py-2 text-lg font-semibold scroll-menu text-primary hover:text-primary dark:text-white dark:hover:text-white lg:ml-7 lg:inline-flex lg:py-5 xl:ml-10 2xl:ml-12">
+                    О нас
+                  </a>
+                </li>
+                <li>
+                  <a href="#features"
+                    class="flex py-2 text-lg font-semibold scroll-menu text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-white lg:ml-7 lg:inline-flex lg:py-5 xl:ml-10 2xl:ml-12">
+                    Миссия
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#roadmap"
+                    class="flex py-2 text-lg font-semibold scroll-menu text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-white lg:ml-7 lg:inline-flex lg:py-5 xl:ml-10 2xl:ml-12">
+                    Дорожная карта
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#testimonial"
+                    class="flex py-2 text-lg font-semibold scroll-menu text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-white lg:ml-7 lg:inline-flex lg:py-5 xl:ml-10 2xl:ml-12">
+                    Мнения
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact"
+                    class="flex py-2 text-lg font-semibold scroll-menu text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-white lg:ml-7 lg:inline-flex lg:py-5 xl:ml-10 2xl:ml-12">
+                    Контакты
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="flex justify-end pr-16 lg:pr-0 ">
+            <div class="mr-4">
+              <label for="darkToggler"
+                class="flex h-11 w-20 cursor-pointer items-center justify-center rounded-full bg-light-bg dark:bg-[#1E2763]">
+                <input type="checkbox" name="darkToggler" id="darkToggler" class="sr-only" aria-label="darkToggler">
+                <span
+                  class="flex items-center justify-center w-8 h-8 text-white rounded-full bg-primary dark:bg-transparent dark:text-body-color">
+                  <svg width="16" height="16" viewBox="0 0 16 16" class="fill-current">
+                    <path
+                      d="M4.50663 3.2267L3.30663 2.03337L2.36663 2.97337L3.55996 4.1667L4.50663 3.2267ZM2.66663 7.00003H0.666626V8.33337H2.66663V7.00003ZM8.66663 0.366699H7.33329V2.33337H8.66663V0.366699ZM13.6333 2.97337L12.6933 2.03337L11.5 3.2267L12.44 4.1667L13.6333 2.97337ZM11.4933 12.1067L12.6866 13.3067L13.6266 12.3667L12.4266 11.1734L11.4933 12.1067ZM13.3333 7.00003V8.33337H15.3333V7.00003H13.3333ZM7.99996 3.6667C5.79329 3.6667 3.99996 5.46003 3.99996 7.6667C3.99996 9.87337 5.79329 11.6667 7.99996 11.6667C10.2066 11.6667 12 9.87337 12 7.6667C12 5.46003 10.2066 3.6667 7.99996 3.6667ZM7.33329 14.9667H8.66663V13H7.33329V14.9667ZM2.36663 12.36L3.30663 13.3L4.49996 12.1L3.55996 11.16L2.36663 12.36Z">
+                    </path>
+                  </svg>
+                </span>
+                <span
+                  class="flex items-center justify-center w-8 h-8 bg-transparent rounded-full text-body-color-2 dark:bg-primary dark:text-white">
+                  <svg width="13" height="15" viewBox="0 0 13 15" class="fill-current">
+                    <path
+                      d="M10.6111 12.855C11.591 12.1394 12.3151 11.1979 12.7723 10.1623C10.4824 10.4065 8.1342 9.46314 6.67948 7.47109C5.22476 5.47905 5.04093 2.95516 5.97054 0.848179C4.84491 0.968503 3.72768 1.37162 2.74781 2.08719C-0.224105 4.25747 -0.874706 8.43084 1.29558 11.4028C3.46586 14.3747 7.63923 15.0253 10.6111 12.855Z">
+                    </path>
+                  </svg>
+                </span>
+              </label>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ===== Header end ===== -->
+
+  <!-- ===== Hero Section start ===== -->
+  <section id="home" class="relative z-10 pt-48 pb-28">
+    <div class="container">
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4">
+          <div class="mx-auto max-w-[720px] text-center">
+            <h1 class="mb-4 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Lead Board -
+              биржа лидов</h1>
+            <p class="mx-auto mb-4 max-w-[620px] text-lg font-medium text-body-color-2 dark:text-white">
+              Lead Board — это B2B-платформа по продаже квалифицированных лидов бизнесам, которая позволяет компаниям
+              получать готовых клиентов <b>без необходимости самостоятельно заниматься рекламой, создавать маркетинговые
+                отделы или нанимать внешние агентства.</b>
+            </p>
+
+           <style>
+            /* Анимация появления тултипа */
+            @keyframes tooltip-pop {
+              0% {
+                opacity: 0;
+                transform: translate(-50%, -6px) scale(0.95);
+              }
+              60% {
+                opacity: 1;
+                transform: translate(-50%, -12px) scale(1.05);
+              }
+              100% {
+                opacity: 1;
+                transform: translate(-50%, -10px) scale(1);
+              }
+            }
+
+            /* Бесконечная пульсация иконок */
+            @keyframes icon-pulse {
+              0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(64, 188, 236, 0);
+              }
+              50% {
+                transform: scale(1.07);
+                box-shadow: 0 0 10px rgba(64, 188, 236, 0.3);
+              }
+            }
+
+            /* Анимация фона (градиент переливается) */
+            @keyframes bg-shift {
+              0% {
+                background-position: 0% 50%;
+              }
+              50% {
+                background-position: 100% 50%;
+              }
+              100% {
+                background-position: 0% 50%;
+              }
+            }
+
+            /* При наведении – пружинная анимация тултипа */
+            .group:hover .tooltip {
+              animation: tooltip-pop 0.25s ease-out forwards;
+            }
+
+            /* Стиль иконок */
+            .icon {
+              transition: all 0.3s ease;
+              animation: icon-pulse 3s ease-in-out infinite, bg-shift 6s ease infinite;
+              background: linear-gradient(270deg, #122b5c, #3e7dff, #122b5c);
+              background-size: 200% 200%;
+              color: white;
+              cursor: pointer;
+            }
+
+            /* Эффект при наведении */
+            .group:hover .icon {
+              transform: scale(1.1) rotate(8deg);
+              box-shadow: 0 0 15px rgba(64, 188, 236, 0.6);
+              animation: bg-shift 3s ease infinite;
+            }
+
+            /* Tooltip позиционирование */
+            .tooltip {
+              top: -45px; /* фиксированное и ровное расстояние */
+              left: 50%;
+              transform: translateX(-50%);
+            }
+
+            /* Маленький треугольник под тултипом */
+            .tooltip span:first-child {
+              bottom: -6px;
+            }
+          </style>
+
+          <div class="flex flex-wrap items-center justify-center mb-10 -mx-1 sm:-mx-2">
+            <!-- TG -->
+            <div class="relative px-1 mt-4 group sm:px-2">
+              <span class="icon flex items-center justify-center w-10 h-10 mt-2 text-black font-semibold rounded-full">
+                TG
+              </span>
+              <div
+                class="tooltip absolute z-50 whitespace-nowrap rounded-full bg-[#2D2C4A] px-5 py-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span class="absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-[#2D2C4A]"></span>
+                <span>Telegram Ads</span>
+              </div>
+            </div>
+
+            <!-- IN -->
+            <div class="relative px-1 mt-4 group sm:px-2">
+              <span class="icon flex items-center justify-center w-10 h-10 mt-2 text-black font-semibold rounded-full">
+                IN
+              </span>
+              <div
+                class="tooltip absolute z-50 whitespace-nowrap rounded-full bg-[#2D2C4A] px-5 py-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span class="absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-[#2D2C4A]"></span>
+                <span>Instagram</span>
+              </div>
+            </div>
+
+            <!-- FB -->
+            <div class="relative px-1 mt-4 group sm:px-2">
+              <span class="icon flex items-center justify-center w-10 h-10 mt-2 text-black font-semibold rounded-full">
+                FB
+              </span>
+              <div
+                class="tooltip absolute z-50 whitespace-nowrap rounded-full bg-[#2D2C4A] px-5 py-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span class="absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-[#2D2C4A]"></span>
+                <span>Facebook</span>
+              </div>
+            </div>
+
+            <!-- LN -->
+            <div class="relative px-1 mt-4 group sm:px-2">
+              <span class="icon flex items-center justify-center w-10 h-10 mt-2 text-black font-semibold rounded-full">
+                WS
+              </span>
+              <div
+                class="tooltip absolute z-50 whitespace-nowrap rounded-full bg-[#2D2C4A] px-5 py-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span class="absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-[#2D2C4A]"></span>
+                <span>Website</span>
+              </div>
+            </div>
+
+            <!-- GO -->
+            <div class="relative px-1 mt-4 group sm:px-2">
+              <span class="icon flex items-center justify-center w-10 h-10 mt-2 text-black font-semibold rounded-full">
+                GO
+              </span>
+              <div
+                class="tooltip absolute z-50 whitespace-nowrap rounded-full bg-[#2D2C4A] px-5 py-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span class="absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-[#2D2C4A]"></span>
+                <span>Google</span>
+              </div>
+            </div>
+          </div>
+
+
+            <a href="#contact"
+              class="px-8 py-3 text-base font-semibold text-white rounded-full bg-primary hover:bg-primary/90 dark:hover:bg-primary/90">
+              Связаться </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute top-0 left-0 w-full h-full -z-10 opacity-20"
+      style="background-image: linear-gradient(180deg, #3e7dff 0%, rgba(62, 125, 255, 0) 100%)"></div>
+    <img src="src/images/shapes/hero-shape-1.svg" alt="" class="absolute top-0 left-0 -z-10">
+    <img src="src/images/shapes/hero-shape-2.svg" alt="" class="absolute top-0 right-0 -z-10">
+  </section>
+  <!-- ===== Hero Section end ===== -->
+
+  <!-- ===== Brands Section start ===== -->
+  <section>
+    <div class="container">
+      <div class="wow fadeInUp border-y border-[#F3F4F4] pt-10 dark:border-[#2D2C4A]" data-wow-delay="0s">
+        <h2 class="mb-10 text-lg font-bold text-center text-black dark:text-white sm:text-2xl">Сферы бизнеса в которых
+          мы специализируемся</h2>
+
+        <div class="flex flex-wrap items-center justify-center -mx-4">
+          <div class="px-4">
+            <a target="_blank" rel="nofollow noopenner"
+              class="mb-10 flex max-w-[170px] justify-center opacity-70 grayscale hover:opacity-100 hover:grayscale-0 dark:hover:opacity-100 text-black text-2xl dark:text-white">
+              Образование
+            </a>
+          </div>
+          <div class="px-4">
+            <a target="_blank" rel="nofollow noopenner"
+              class="mb-10 flex max-w-[170px] justify-center opacity-70 grayscale hover:opacity-100 hover:grayscale-0 dark:hover:opacity-100 text-black text-2xl dark:text-white">
+              Недвижимость
+            </a>
+          </div>
+          <div class="px-4">
+            <a target="_blank" rel="nofollow noopenner"
+              class="mb-10 flex max-w-[170px] justify-center opacity-70 grayscale hover:opacity-100 hover:grayscale-0 dark:hover:opacity-100 text-black text-2xl dark:text-white">
+              Туризм
+            </a>
+          </div>
+          <div class="px-4">
+            <a target="_blank" rel="nofollow noopenner"
+              class="mb-10 flex max-w-[170px] justify-center opacity-70 grayscale hover:opacity-100 hover:grayscale-0 dark:hover:opacity-100 text-black text-2xl dark:text-white">
+              Медицина
+            </a>
+          </div>
+          <div class="px-4">
+            <a target="_blank" rel="nofollow noopenner"
+              class="mb-10 flex max-w-[170px] justify-center opacity-70 grayscale hover:opacity-100 hover:grayscale-0 dark:hover:opacity-100 text-black text-2xl dark:text-white">
+              B2C - услуги 
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Brands Section end ===== -->
+
+  <!-- ===== Features Section start ===== -->
+  <section id="features" class="pt-[120px] pb-16">
+    <div class="container">
+      <div class="wow fadeInUp mx-auto mb-16 max-w-[590px] text-center md:mb-20" data-wow-delay="0s">
+        <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> Преимущества </span>
+        <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Lead Board</h2>
+        <p class="text-lg font-medium text-body-color-2 dark:text-body-color">6 ключевых преимуществ проекта</p>
+      </div>
+
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mx-auto mb-14 max-w-[370px] text-center" data-wow-delay="0s">
+            <div class="flex items-center justify-center w-20 h-20 mx-auto text-white rounded-full mb-7 bg-primary">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M20 1.66675L5 8.33341V18.3334C5 27.5834 11.4 36.2334 20 38.3334C28.6 36.2334 35 27.5834 35 18.3334V8.33341L20 1.66675ZM20 19.9834H31.6667C30.7833 26.8501 26.2 32.9667 20 34.8834V20.0001H8.33333V10.5001L20 5.31675V19.9834Z"
+                  fill="white"></path>
+              </svg>
+            </div>
+
+            <div>
+              <h3 class="mb-3 text-md font-bold text-black dark:text-white sm:text-xl lg:text-md xl:text-xl">
+                Квалифицированные лиды</h3>
+
+              <p
+                class="text-base font-medium text-body-color-2 dark:text-body-color sm:text-md lg:text-base xl:text-md">
+                Предоставляем компаниям проверенных и заинтересованных клиентов, которые уже подтвердили свой интерес к
+                услуге
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mx-auto mb-14 max-w-[370px] text-center" data-wow-delay="0s">
+            <div class="flex items-center justify-center w-20 h-20 mx-auto text-white rounded-full mb-7 bg-primary">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M33.3333 9.99992H29.6999C29.8833 9.48325 29.9999 8.91658 29.9999 8.33325C29.9999 5.56659 27.7666 3.33325 24.9999 3.33325C23.2499 3.33325 21.7333 4.23325 20.8333 5.58325L19.9999 6.69992L19.1666 5.56659C18.2666 4.23325 16.7499 3.33325 14.9999 3.33325C12.2333 3.33325 9.99992 5.56659 9.99992 8.33325C9.99992 8.91658 10.1166 9.48325 10.2999 9.99992H6.66659C4.81659 9.99992 3.34992 11.4833 3.34992 13.3333L3.33325 31.6666C3.33325 33.5166 4.81659 34.9999 6.66659 34.9999H33.3333C35.1833 34.9999 36.6666 33.5166 36.6666 31.6666V13.3333C36.6666 11.4833 35.1833 9.99992 33.3333 9.99992ZM24.9999 6.66659C25.9166 6.66659 26.6666 7.41658 26.6666 8.33325C26.6666 9.24992 25.9166 9.99992 24.9999 9.99992C24.0833 9.99992 23.3333 9.24992 23.3333 8.33325C23.3333 7.41658 24.0833 6.66659 24.9999 6.66659ZM14.9999 6.66659C15.9166 6.66659 16.6666 7.41658 16.6666 8.33325C16.6666 9.24992 15.9166 9.99992 14.9999 9.99992C14.0833 9.99992 13.3333 9.24992 13.3333 8.33325C13.3333 7.41658 14.0833 6.66659 14.9999 6.66659ZM33.3333 31.6666H6.66659V28.3333H33.3333V31.6666ZM33.3333 23.3333H6.66659V13.3333H15.1333L11.6666 18.0499L14.3666 19.9999L18.3333 14.5999L19.9999 12.3333L21.6666 14.5999L25.6333 19.9999L28.3333 18.0499L24.8666 13.3333H33.3333V23.3333Z"
+                  fill="white"></path>
+              </svg>
+            </div>
+
+            <div>
+              <h3 class="mb-3 text-md font-bold text-black dark:text-white sm:text-xl lg:text-md xl:text-xl">
+                Отсутствие необходимости в маркетинговой команде</h3>
+              <p
+                class="text-base font-medium text-body-color-2 dark:text-body-color sm:text-md lg:text-base xl:text-md">
+                Бизнесу больше не нужно нанимать таргетологов, дизайнеров и SMM-специалистов — весь процесс генерации
+                лидов полностью берет на себя Lead Board.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mx-auto mb-14 max-w-[370px] text-center" data-wow-delay="0s">
+            <div class="flex items-center justify-center w-20 h-20 mx-auto text-white rounded-full mb-7 bg-primary">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 3.33325L10.8334 18.3333H29.1667L20 3.33325Z" fill="white"></path>
+                <path
+                  d="M29.1666 36.6667C33.3088 36.6667 36.6666 33.3089 36.6666 29.1667C36.6666 25.0246 33.3088 21.6667 29.1666 21.6667C25.0245 21.6667 21.6666 25.0246 21.6666 29.1667C21.6666 33.3089 25.0245 36.6667 29.1666 36.6667Z"
+                  fill="white"></path>
+                <path d="M5 22.5H18.3333V35.8333H5V22.5Z" fill="white"></path>
+              </svg>
+            </div>
+
+            <div>
+              <h3 class="mb-3 text-md font-bold text-black dark:text-white sm:text-xl lg:text-md xl:text-xl">Экономия
+                бюджета и времени</h3>
+              <p
+                class="text-base font-medium text-body-color-2 dark:text-body-color sm:text-md lg:text-base xl:text-md">
+                Компании платят только за результат — за лиды, а не за клики, показы или эксперименты с рекламой. Это
+                снижает стоимость привлечения клиента и ускоряет продажи.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mx-auto mb-14 max-w-[370px] text-center" data-wow-delay="0s">
+            <div class="flex items-center justify-center w-20 h-20 mx-auto text-white rounded-full mb-7 bg-primary">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M5 24.9999H18.3333V21.6666H5V24.9999ZM5 31.6666H18.3333V28.3333H5V31.6666ZM5 18.3333H18.3333V14.9999H5V18.3333ZM5 8.33325V11.6666H18.3333V8.33325H5ZM21.6667 8.33325H35V31.6666H21.6667V8.33325Z"
+                  fill="white"></path>
+              </svg>
+            </div>
+
+            <div>
+              <h3 class="mb-3 text-md font-bold text-black dark:text-white sm:text-xl lg:text-md xl:text-xl">
+                Прозрачная аналитика и конверсии</h3>
+              <p
+                class="text-base font-medium text-body-color-2 dark:text-body-color sm:text-md lg:text-base xl:text-md">
+                Платформа автоматически считает конверсию, выручку и эффективность по каждому направлению, помогая
+                бизнесу принимать решения на основе данных.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mx-auto mb-14 max-w-[370px] text-center" data-wow-delay="0s">
+            <div class="flex items-center justify-center w-20 h-20 mx-auto text-white rounded-full mb-7 bg-primary">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M35 30V31.6667C35 33.5 33.5 35 31.6667 35H8.33333C6.48333 35 5 33.5 5 31.6667V8.33333C5 6.5 6.48333 5 8.33333 5H31.6667C33.5 5 35 6.5 35 8.33333V10H20C18.15 10 16.6667 11.5 16.6667 13.3333V26.6667C16.6667 28.5 18.15 30 20 30H35ZM20 26.6667H36.6667V13.3333H20V26.6667ZM26.6667 22.5C25.2833 22.5 24.1667 21.3833 24.1667 20C24.1667 18.6167 25.2833 17.5 26.6667 17.5C28.05 17.5 29.1667 18.6167 29.1667 20C29.1667 21.3833 28.05 22.5 26.6667 22.5Z"
+                  fill="white"></path>
+              </svg>
+            </div>
+
+            <div>
+              <h3 class="mb-3 text-md font-bold text-black dark:text-white sm:text-xl lg:text-md xl:text-xl">
+                Универсальность и масштабируемость
+              </h3>
+              <p
+                class="text-base font-medium text-body-color-2 dark:text-body-color sm:text-md lg:text-base xl:text-md">
+                Охватываем разные ниши — от образовательных центров и туризма до недвижимости и услуг, легко
+                масштабируясь на новые направления и рынки.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mx-auto mb-14 max-w-[370px] text-center" data-wow-delay="0s">
+            <div class="flex items-center justify-center w-20 h-20 mx-auto text-white rounded-full mb-7 bg-primary">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M20 13.3333C16.3167 13.3333 13.3333 16.3167 13.3333 20C13.3333 23.6833 16.3167 26.6667 20 26.6667C23.6833 26.6667 26.6667 23.6833 26.6667 20C26.6667 16.3167 23.6833 13.3333 20 13.3333ZM8.33333 25H5V31.6667C5 33.5 6.5 35 8.33333 35H15V31.6667H8.33333V25ZM8.33333 8.33333H15V5H8.33333C6.5 5 5 6.5 5 8.33333V15H8.33333V8.33333ZM31.6667 5H25V8.33333H31.6667V15H35V8.33333C35 6.5 33.5 5 31.6667 5ZM31.6667 31.6667H25V35H31.6667C33.5 35 35 33.5 35 31.6667V25H31.6667V31.6667Z"
+                  fill="white"></path>
+              </svg>
+            </div>
+
+            <div>
+              <h3 class="mb-3 text-md font-bold text-black dark:text-white sm:text-xl lg:text-md xl:text-xl">Удобство
+                и мгновенный доступ к клиентам</h3>
+              <p
+                class="text-base font-medium text-body-color-2 dark:text-body-color sm:text-md lg:text-base xl:text-md">
+                Бизнес может в любой момент зайти на платформу, выбрать нужную категорию и купить свежие лиды.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Features Section end ===== -->
+
+  <!-- ===== Token Section start ===== -->
+  <!-- <section class="relative z-10">
+    <div class="container">
+      <div class="rounded-lg bg-light-bg py-12 px-8 dark:bg-[#14102C] sm:py-16 sm:px-14 lg:px-8 xl:px-14">
+        <div class="flex flex-wrap items-center -mx-4">
+          <div class="w-full px-4 lg:w-1/2">
+            <div class="flex items-center justify-center mb-12 wow fadeInUp lg:mb-0" data-wow-delay="0s">
+              <div id="chart"></div>
+            </div>
+          </div>
+          <div class="w-full px-4 lg:w-1/2">
+            <div class="wow fadeInUp mb-9" data-wow-delay="0s">
+              <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> TOKEN </span>
+              <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Token Sale
+              </h2>
+              <p class="text-lg font-medium text-body-color-2 dark:text-body-color">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus condimentum tellus at lectus
+                pulvinar, id auctor felis iaculis. In vestibulum neque sem, at dapibus justo facilisis
+                in.
+              </p>
+            </div>
+            <div class="space-y-4 wow fadeInUp" data-wow-delay="0s">
+              <p class="flex">
+                <span class="w-6 h-6 mr-4 rounded-full bg-primary"></span>
+                <span class="text-lg font-medium text-body-color-2 dark:text-body-color"> 73% Financial Overhead </span>
+              </p>
+              <p class="flex">
+                <span class="mr-4 h-6 w-6 rounded-full bg-[#2347B9]"></span>
+                <span class="text-lg font-medium text-body-color-2 dark:text-body-color"> 55% Bonus & found </span>
+              </p>
+              <p class="flex">
+                <span class="mr-4 h-6 w-6 rounded-full bg-[#8BA6FF]"></span>
+                <span class="text-lg font-medium text-body-color-2 dark:text-body-color"> 38% it infastrueture </span>
+              </p>
+              <p class="flex">
+                <span class="mr-4 h-6 w-6 rounded-full bg-[#8696CA]"></span>
+                <span class="text-lg font-medium text-body-color-2 dark:text-body-color"> 20.93% Gift Code Inventory
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute right-0 -top-32 -z-10">
+      <img src="src/images/shapes/token-sale-shape.svg" alt="shape">
+    </div>
+  </section> -->
+  <!-- ===== Token Section end ===== -->
+
+  <!-- ===== Roadmap Section start ===== -->
+  <section id="roadmap" class="relative z-10 py-[120px]">
+    <div class="container">
+      <div class="wow fadeInUp mx-auto mb-16 max-w-[590px] text-center md:mb-20" data-wow-delay="0s">
+        <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> Процесс </span>
+        <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Дорожная карта</h2>
+        <p class="text-lg font-medium text-body-color-2 dark:text-body-color">Следите за тем, как Lead Board развивается
+          и растёт</p>
+      </div>
+
+      <div class="flex justify-center -mx-4">
+        <div class="w-full px-4 lg:w-10/12 xl:w-9/12">
+          <div class="relative flex flex-wrap -mx-4 wow fadeInUp md:py-14 lg:py-20" data-wow-delay="0s">
+            <span
+              class="absolute top-0 left-2 hidden h-full w-[2px] bg-light-bg dark:bg-[#2D2C4A] md:left-1/2 md:block"></span>
+            <div class="w-full px-4 md:w-1/2">
+              <div
+                class="relative z-10 px-6 py-8 mb-10 rounded-lg bg-light-bg dark:bg-dark md:mr-3 md:mb-0 md:text-right lg:mr-5">
+                <span
+                  class="absolute left-0 hidden w-4 h-4 -translate-y-1/2 bg-white border-4 rounded-full top-1/2 border-primary dark:border-body-color md:left-auto md:-right-9 md:block lg:-right-11"></span>
+                <span
+                  class="absolute hidden w-3 h-3 rotate-45 -translate-y-1/2 -right-1 top-1/2 bg-light-bg dark:bg-dark md:block"></span>
+                <h3 class="mb-3 text-xl font-bold text-black dark:text-white">Август 2025 год</h3>
+                <p class="mb-5 text-base font-medium text-body-color-2 dark:text-body-color">
+                  * Проведение тестов идеи и анализ рынка <br>
+                  * Исследование альтернативных решений и проектов по всему миру
+                </p>
+
+              </div>
+            </div>
+            <div class="w-full px-4 md:w-1/2"></div>
+            <div class="w-full px-4 md:w-1/2"></div>
+            <div class="w-full px-4 md:w-1/2">
+              <div class="relative z-10 px-6 py-8 mb-10 rounded-lg bg-light-bg dark:bg-dark md:ml-3 md:mb-0 lg:ml-5">
+                <span
+                  class="absolute left-0 hidden w-4 h-4 -translate-y-1/2 bg-white border-4 rounded-full top-1/2 border-primary dark:border-body-color md:right-auto md:-left-9 md:block lg:-left-11"></span>
+                <span
+                  class="absolute hidden w-3 h-3 rotate-45 -translate-y-1/2 -left-1 top-1/2 bg-light-bg dark:bg-dark md:block"></span>
+                <h3 class="mb-3 text-xl font-bold text-black dark:text-white">Сентябрь 2025 год</h3>
+                <p class="mb-5 text-base font-medium text-body-color-2 dark:text-body-color">
+                  * Проведение CustDev-интервью с учебными центрами (B2B сегмент) <br>
+                  * Подтверждение рыночного интереса к платформе <br>
+                  * Разработка дизайна и архитектуры платформы
+                </p>
+
+                              </div>
+            </div>
+            <div class="w-full px-4 md:w-1/2">
+              <div
+                class="relative z-10 px-6 py-8 mb-10 rounded-lg bg-light-bg dark:bg-dark md:mr-3 md:mb-0 md:text-right lg:mr-5">
+                <span
+                  class="absolute left-0 hidden w-4 h-4 -translate-y-1/2 bg-white border-4 rounded-full top-1/2 border-primary dark:border-body-color md:left-auto md:-right-9 md:block lg:-right-11"></span>
+                <span
+                  class="absolute hidden w-3 h-3 rotate-45 -translate-y-1/2 -right-1 top-1/2 bg-light-bg dark:bg-dark md:block"></span>
+                <h3 class="mb-3 text-xl font-bold text-black dark:text-white">Октябрь 2025 год</h3>
+                <p class="mb-5 text-base font-medium text-body-color-2 dark:text-body-color">
+                  * Подготовка к тестированию маркетинговых гипотез <br>
+                  * Формирование финансовой стратегии <br>
+                  * Начало разработки платформы
+                </p>
+
+                
+              </div>
+            </div>
+            <div class="w-full px-4 md:w-1/2"></div>
+            <div class="w-full px-4 md:w-1/2"></div>
+            <div class="w-full px-4 md:w-1/2">
+              <div class="relative z-10 px-6 py-8 mb-10 rounded-lg bg-light-bg dark:bg-dark md:ml-3 md:mb-0 lg:ml-5">
+                <span
+                  class="absolute left-0 hidden w-4 h-4 -translate-y-1/2 bg-white border-4 rounded-full top-1/2 border-primary dark:border-body-color md:right-auto md:-left-9 md:block lg:-left-11"></span>
+                <span
+                  class="absolute hidden w-3 h-3 rotate-45 -translate-y-1/2 -left-1 top-1/2 bg-light-bg dark:bg-dark md:block"></span>
+                <h3 class="mb-3 text-xl font-bold text-black dark:text-white">Ноябрь 2025 год</h3>
+                <p class="mb-5 text-base font-medium text-body-color-2 dark:text-body-color">
+                  * Завершение первого этапа разработки (MVP) <br>
+                  * Тестирование маркетинговых гипотез <br>
+                  * Ведение соц. сетей, повышение узнаваемости бренда <br>
+                  * Закрытая продажа лидов и получение обратной связи
+                </p>
+
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 -z-10">
+      <img src="src/images/shapes/timeline.svg" alt="shape">
+    </div>
+  </section>
+  <!-- ===== Roadmap Section end ===== -->
+
+  <!-- ===== Team Section start ===== -->
+  <section id="team" class="border-t border-[#F3F4F4] pt-[120px] pb-20 dark:border-[#2D2C4A]">
+    <div class="container">
+      <div class="wow fadeInUp mx-auto mb-16 max-w-[590px] text-center md:mb-20" data-wow-delay="0s">
+        <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> Наша команда </span>
+        <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Команда Lead Board
+        </h2>
+        <p class="text-lg font-medium text-body-color-2 dark:text-body-color">На данный момент наша команда состоит из 5
+          ключевых участников</p>
+      </div>
+
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 sm:w-1/2 lg:w-1/4">
+          <div
+            class="p-4 mb-10 text-center transition-all border-b-4 border-transparent rounded-lg group wow fadeInUp bg-light-bg hover:border-primary dark:bg-dark"
+            data-wow-delay="0s">
+            <div class="mb-6 overflow-hidden  rounded-sm">
+              <img src="src/images/team/image-01.jpg" alt="team" class="w-full" style="height: 335px; object-fit: cover;">
+            </div>
+            <div>
+              <h3 class="mb-2 text-lg font-semibold text-black dark:text-white">Кадыров Хусан</h3>
+              <p class="mb-3 text-sm font-medium text-body-color-2 dark:text-body-color">Основатель проекта</p>
+
+              <div class="flex items-center justify-center mb-4 space-x-4">
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.1 240.1" class="fill-current">
+                      <linearGradient id="Oval_1_" gradientUnits="userSpaceOnUse" x1="-838.041" y1="660.581" x2="-838.041" y2="660.3427" gradientTransform="matrix(1000 0 0 -1000 838161 660581)">
+                      <stop offset="0" style="stop-color:#2AABEE"></stop>
+                      <stop offset="1" style="stop-color:#229ED9"></stop>
+                      </linearGradient>
+                      <circle fill-rule="evenodd" clip-rule="evenodd" fill="url(#Oval_1_)" cx="120.1" cy="120.1" r="120.1"></circle>
+                      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M54.3,118.8c35-15.2,58.3-25.3,70-30.2 c33.3-13.9,40.3-16.3,44.8-16.4c1,0,3.2,0.2,4.7,1.4c1.2,1,1.5,2.3,1.7,3.3s0.4,3.1,0.2,4.7c-1.8,19-9.6,65.1-13.6,86.3 c-1.7,9-5,12-8.2,12.3c-7,0.6-12.3-4.6-19-9c-10.6-6.9-16.5-11.2-26.8-18c-11.9-7.8-4.2-12.1,2.6-19.1c1.8-1.8,32.5-29.8,33.1-32.3 c0.1-0.3,0.1-1.5-0.6-2.1c-0.7-0.6-1.7-0.4-2.5-0.2c-1.1,0.2-17.9,11.4-50.6,33.5c-4.8,3.3-9.1,4.9-13,4.8 c-4.3-0.1-12.5-2.4-18.7-4.4c-7.5-2.4-13.5-3.7-13-7.9C45.7,123.3,48.7,121.1,54.3,118.8z"></path>
+                    </svg>
+                </a>
+                
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" class="fill-current"  xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="7.025 7.025 497.951 497.95" id="linkedin">
+                    <linearGradient id="a" x1="-974.482" x2="-622.378" y1="1306.773" y2="1658.877" gradientTransform="translate(1054.43 -1226.825)" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#2489be"/>
+                      <stop offset="1" stop-color="#0575b3"/>
+                    </linearGradient>
+                    <path fill="url(#a)" d="M256 7.025C118.494 7.025 7.025 118.494 7.025 256S118.494 504.975 256 504.975 504.976 393.506 504.976 256C504.975 118.494 393.504 7.025 256 7.025zm-66.427 369.343h-54.665V199.761h54.665v176.607zM161.98 176.633c-17.853 0-32.326-14.591-32.326-32.587 0-17.998 14.475-32.588 32.326-32.588s32.324 14.59 32.324 32.588c.001 17.997-14.472 32.587-32.324 32.587zm232.45 199.735h-54.4v-92.704c0-25.426-9.658-39.619-29.763-39.619-21.881 0-33.312 14.782-33.312 39.619v92.704h-52.43V199.761h52.43v23.786s15.771-29.173 53.219-29.173c37.449 0 64.257 22.866 64.257 70.169l-.001 111.825z"/>
+                  </svg>
+                </a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 sm:w-1/2 lg:w-1/4">
+          <div
+            class="p-4 mb-10 text-center transition-all border-b-4 border-transparent rounded-lg group wow fadeInUp bg-light-bg hover:border-primary dark:bg-dark"
+            data-wow-delay="0s">
+            <div class="mb-6 overflow-hidden  rounded-sm">
+              <img src="src/images/team/image-02.jpg" alt="team" class="w-full" style="height: 335px; object-fit: cover;">
+            </div>
+            <div>
+              <h3 class="mb-2 text-lg font-semibold text-black dark:text-white">Баймурадов Акбар</h3>
+              <p class="mb-3 text-sm font-medium text-body-color-2 dark:text-body-color">Маркетолог</p>
+
+              <div class="flex items-center justify-center mb-4 space-x-4">
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.1 240.1" class="fill-current">
+                      <linearGradient id="Oval_1_" gradientUnits="userSpaceOnUse" x1="-838.041" y1="660.581" x2="-838.041" y2="660.3427" gradientTransform="matrix(1000 0 0 -1000 838161 660581)">
+                      <stop offset="0" style="stop-color:#2AABEE"></stop>
+                      <stop offset="1" style="stop-color:#229ED9"></stop>
+                      </linearGradient>
+                      <circle fill-rule="evenodd" clip-rule="evenodd" fill="url(#Oval_1_)" cx="120.1" cy="120.1" r="120.1"></circle>
+                      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M54.3,118.8c35-15.2,58.3-25.3,70-30.2 c33.3-13.9,40.3-16.3,44.8-16.4c1,0,3.2,0.2,4.7,1.4c1.2,1,1.5,2.3,1.7,3.3s0.4,3.1,0.2,4.7c-1.8,19-9.6,65.1-13.6,86.3 c-1.7,9-5,12-8.2,12.3c-7,0.6-12.3-4.6-19-9c-10.6-6.9-16.5-11.2-26.8-18c-11.9-7.8-4.2-12.1,2.6-19.1c1.8-1.8,32.5-29.8,33.1-32.3 c0.1-0.3,0.1-1.5-0.6-2.1c-0.7-0.6-1.7-0.4-2.5-0.2c-1.1,0.2-17.9,11.4-50.6,33.5c-4.8,3.3-9.1,4.9-13,4.8 c-4.3-0.1-12.5-2.4-18.7-4.4c-7.5-2.4-13.5-3.7-13-7.9C45.7,123.3,48.7,121.1,54.3,118.8z"></path>
+                    </svg>
+                </a>
+                
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" class="fill-current"  xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="7.025 7.025 497.951 497.95" id="linkedin">
+                    <linearGradient id="a" x1="-974.482" x2="-622.378" y1="1306.773" y2="1658.877" gradientTransform="translate(1054.43 -1226.825)" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#2489be"/>
+                      <stop offset="1" stop-color="#0575b3"/>
+                    </linearGradient>
+                    <path fill="url(#a)" d="M256 7.025C118.494 7.025 7.025 118.494 7.025 256S118.494 504.975 256 504.975 504.976 393.506 504.976 256C504.975 118.494 393.504 7.025 256 7.025zm-66.427 369.343h-54.665V199.761h54.665v176.607zM161.98 176.633c-17.853 0-32.326-14.591-32.326-32.587 0-17.998 14.475-32.588 32.326-32.588s32.324 14.59 32.324 32.588c.001 17.997-14.472 32.587-32.324 32.587zm232.45 199.735h-54.4v-92.704c0-25.426-9.658-39.619-29.763-39.619-21.881 0-33.312 14.782-33.312 39.619v92.704h-52.43V199.761h52.43v23.786s15.771-29.173 53.219-29.173c37.449 0 64.257 22.866 64.257 70.169l-.001 111.825z"/>
+                  </svg>
+                </a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 sm:w-1/2 lg:w-1/4">
+          <div
+            class="p-4 mb-10 text-center transition-all border-b-4 border-transparent rounded-lg group wow fadeInUp bg-light-bg hover:border-primary dark:bg-dark"
+            data-wow-delay="0s">
+            <div class="mb-6 overflow-hidden  rounded-sm">
+              <img src="src/images/team/image-03.jpg" alt="team" class="w-full" style="height: 335px; object-fit: cover;">
+            </div>
+            <div>
+              <h3 class="mb-2 text-lg font-semibold text-black dark:text-white">Касымов Тимур</h3>
+              <p class="mb-3 text-sm font-medium text-body-color-2 dark:text-body-color">Front-end разработчик</p>
+
+              <div class="flex items-center justify-center mb-4 space-x-4">
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.1 240.1" class="fill-current">
+                      <linearGradient id="Oval_1_" gradientUnits="userSpaceOnUse" x1="-838.041" y1="660.581" x2="-838.041" y2="660.3427" gradientTransform="matrix(1000 0 0 -1000 838161 660581)">
+                      <stop offset="0" style="stop-color:#2AABEE"></stop>
+                      <stop offset="1" style="stop-color:#229ED9"></stop>
+                      </linearGradient>
+                      <circle fill-rule="evenodd" clip-rule="evenodd" fill="url(#Oval_1_)" cx="120.1" cy="120.1" r="120.1"></circle>
+                      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M54.3,118.8c35-15.2,58.3-25.3,70-30.2 c33.3-13.9,40.3-16.3,44.8-16.4c1,0,3.2,0.2,4.7,1.4c1.2,1,1.5,2.3,1.7,3.3s0.4,3.1,0.2,4.7c-1.8,19-9.6,65.1-13.6,86.3 c-1.7,9-5,12-8.2,12.3c-7,0.6-12.3-4.6-19-9c-10.6-6.9-16.5-11.2-26.8-18c-11.9-7.8-4.2-12.1,2.6-19.1c1.8-1.8,32.5-29.8,33.1-32.3 c0.1-0.3,0.1-1.5-0.6-2.1c-0.7-0.6-1.7-0.4-2.5-0.2c-1.1,0.2-17.9,11.4-50.6,33.5c-4.8,3.3-9.1,4.9-13,4.8 c-4.3-0.1-12.5-2.4-18.7-4.4c-7.5-2.4-13.5-3.7-13-7.9C45.7,123.3,48.7,121.1,54.3,118.8z"></path>
+                    </svg>
+                </a>
+                
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" class="fill-current"  xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="7.025 7.025 497.951 497.95" id="linkedin">
+                    <linearGradient id="a" x1="-974.482" x2="-622.378" y1="1306.773" y2="1658.877" gradientTransform="translate(1054.43 -1226.825)" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#2489be"/>
+                      <stop offset="1" stop-color="#0575b3"/>
+                    </linearGradient>
+                    <path fill="url(#a)" d="M256 7.025C118.494 7.025 7.025 118.494 7.025 256S118.494 504.975 256 504.975 504.976 393.506 504.976 256C504.975 118.494 393.504 7.025 256 7.025zm-66.427 369.343h-54.665V199.761h54.665v176.607zM161.98 176.633c-17.853 0-32.326-14.591-32.326-32.587 0-17.998 14.475-32.588 32.326-32.588s32.324 14.59 32.324 32.588c.001 17.997-14.472 32.587-32.324 32.587zm232.45 199.735h-54.4v-92.704c0-25.426-9.658-39.619-29.763-39.619-21.881 0-33.312 14.782-33.312 39.619v92.704h-52.43V199.761h52.43v23.786s15.771-29.173 53.219-29.173c37.449 0 64.257 22.866 64.257 70.169l-.001 111.825z"/>
+                  </svg>
+                </a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 sm:w-1/2 lg:w-1/4">
+          <div
+            class="p-4 mb-10 text-center transition-all border-b-4 border-transparent rounded-lg group wow fadeInUp bg-light-bg hover:border-primary dark:bg-dark"
+            data-wow-delay="0s">
+            <div class="mb-6 overflow-hidden  rounded-sm">
+              <img src="src/images/team/image-04.jpg" alt="team" class="w-full" style="height: 335px; object-fit: cover;">
+            </div>
+            <div>
+              <h3 class="mb-2 text-lg font-semibold text-black dark:text-white">Авазхонов Акбархон</h3>
+              <p class="mb-3 text-sm font-medium text-body-color-2 dark:text-body-color">Backend разработчик</p>
+
+              <div class="flex items-center justify-center mb-4 space-x-4">
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.1 240.1" class="fill-current">
+                      <linearGradient id="Oval_1_" gradientUnits="userSpaceOnUse" x1="-838.041" y1="660.581" x2="-838.041" y2="660.3427" gradientTransform="matrix(1000 0 0 -1000 838161 660581)">
+                      <stop offset="0" style="stop-color:#2AABEE"></stop>
+                      <stop offset="1" style="stop-color:#229ED9"></stop>
+                      </linearGradient>
+                      <circle fill-rule="evenodd" clip-rule="evenodd" fill="url(#Oval_1_)" cx="120.1" cy="120.1" r="120.1"></circle>
+                      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M54.3,118.8c35-15.2,58.3-25.3,70-30.2 c33.3-13.9,40.3-16.3,44.8-16.4c1,0,3.2,0.2,4.7,1.4c1.2,1,1.5,2.3,1.7,3.3s0.4,3.1,0.2,4.7c-1.8,19-9.6,65.1-13.6,86.3 c-1.7,9-5,12-8.2,12.3c-7,0.6-12.3-4.6-19-9c-10.6-6.9-16.5-11.2-26.8-18c-11.9-7.8-4.2-12.1,2.6-19.1c1.8-1.8,32.5-29.8,33.1-32.3 c0.1-0.3,0.1-1.5-0.6-2.1c-0.7-0.6-1.7-0.4-2.5-0.2c-1.1,0.2-17.9,11.4-50.6,33.5c-4.8,3.3-9.1,4.9-13,4.8 c-4.3-0.1-12.5-2.4-18.7-4.4c-7.5-2.4-13.5-3.7-13-7.9C45.7,123.3,48.7,121.1,54.3,118.8z"></path>
+                    </svg>
+                </a>
+                
+                <a href="javascript:void(0)"
+                  class="text-[#B6BFC9] hover:text-primary dark:text-white dark:hover:text-primary" name="social-link"
+                  aria-label="social-link">
+                  <svg width="20" height="20" class="fill-current"  xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="7.025 7.025 497.951 497.95" id="linkedin">
+                    <linearGradient id="a" x1="-974.482" x2="-622.378" y1="1306.773" y2="1658.877" gradientTransform="translate(1054.43 -1226.825)" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#2489be"/>
+                      <stop offset="1" stop-color="#0575b3"/>
+                    </linearGradient>
+                    <path fill="url(#a)" d="M256 7.025C118.494 7.025 7.025 118.494 7.025 256S118.494 504.975 256 504.975 504.976 393.506 504.976 256C504.975 118.494 393.504 7.025 256 7.025zm-66.427 369.343h-54.665V199.761h54.665v176.607zM161.98 176.633c-17.853 0-32.326-14.591-32.326-32.587 0-17.998 14.475-32.588 32.326-32.588s32.324 14.59 32.324 32.588c.001 17.997-14.472 32.587-32.324 32.587zm232.45 199.735h-54.4v-92.704c0-25.426-9.658-39.619-29.763-39.619-21.881 0-33.312 14.782-33.312 39.619v92.704h-52.43V199.761h52.43v23.786s15.771-29.173 53.219-29.173c37.449 0 64.257 22.866 64.257 70.169l-.001 111.825z"/>
+                  </svg>
+                </a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Team Section end ===== -->
+
+  <!-- ===== Testimonial Section start ===== -->
+  <section id="testimonial" class="bg-light-bg pt-[120px] pb-20 dark:bg-[#14102C]">
+    <div class="container">
+      <div class="wow fadeInUp mx-auto mb-16 max-w-[590px] text-center md:mb-20" data-wow-delay="0s">
+        <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> Кастдев (CustDev) </span>
+        <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Что говорят о нас
+        </h2>
+        <p class="text-lg font-medium text-body-color-2 dark:text-body-color">CustDev подтвердил высокую актуальность
+          продукта и готовность бизнеса платить за лиды, что подтверждает рыночный потенциал Lead Board и необходимость
+          ускоренного запуска MVP.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 md:w-1/2">
+          <div
+            class="wow fadeInUp relative z-10 mb-10 overflow-hidden rounded-[10px] bg-white px-6 py-8 dark:bg-[#131B4D] sm:p-10 md:p-8 xl:p-10"
+            style="height: -webkit-fill-available"
+            data-wow-delay="0s">
+            <div class="absolute right-0 top-0 z-[-1]">
+              <img src="src/images/shapes/testimonial-shape.svg" alt="shape">
+            </div>
+            <div class="flex items-center mb-8">
+              <div class="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-sm">
+                <img src="src/images/testimonials/1.png" alt="author">
+              </div>
+              <div class="w-full">
+                <h3 class="mb-1 text-lg font-semibold text-dark dark:text-white">Union Education</h3>
+                <p class="text-sm font-medium text-body-color-2 dark:text-white">CEO & Founder</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-base font-medium leading-snug text-body-color-2 dark:text-body-color">
+                “Мы постоянно сталкиваемся с проблемой привлечения качественных лидов. Идея Lead Board показалась нам
+                отличным решением — купить уже проверенные заявки гораздо эффективнее, чем самим вести рекламу.”
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2">
+          <div
+            class="wow fadeInUp relative z-10 mb-10 overflow-hidden rounded-[10px] bg-white px-6 py-8 dark:bg-[#131B4D] sm:p-10 md:p-8 xl:p-10"
+            style="height: -webkit-fill-available" data-wow-delay="0s">
+            <div class="absolute right-0 top-0 z-[-1]">
+              <img src="src/images/shapes/testimonial-shape.svg" alt="shape">
+            </div>
+            <div class="flex items-center mb-8">
+              <div class="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-sm">
+                <img src="src/images/testimonials/image-02.jpg" alt="author">
+              </div>
+              <div class="w-full">
+                <h3 class="mb-1 text-lg font-semibold text-dark dark:text-white">Gordons Academy</h3>
+                <p class="text-sm font-medium text-body-color-2 dark:text-white">CEO & Founder</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-base font-medium leading-snug text-body-color-2 dark:text-body-color">
+                “Проект решает нашу основную боль — отсутствие стабильного потока лидов. Мы готовы сотрудничать с Lead
+                Board и тестировать покупку лидов для наших языковых курсов.”
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2">
+          <div
+            class="wow fadeInUp relative z-10 mb-10 overflow-hidden rounded-[10px] bg-white px-6 py-8 dark:bg-[#131B4D] sm:p-10 md:p-8 xl:p-10"
+            data-wow-delay="0s">
+            <div class="absolute right-0 top-0 z-[-1]">
+              <img src="src/images/shapes/testimonial-shape.svg" alt="shape">
+            </div>
+            <div class="flex items-center mb-8">
+              <div class="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-sm">
+                <img src="src/images/testimonials/image-03.jpg" alt="author">
+              </div>
+              <div class="w-full">
+                <h3 class="mb-1 text-lg font-semibold text-dark dark:text-white">Malina Tour</h3>
+                <p class="text-sm font-medium text-body-color-2 dark:text-white">CEO & Founder</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-base font-medium leading-snug text-body-color-2 dark:text-body-color">
+                “В высокий сезон у нас всегда возникает нехватка качественных заявок, особенно по новым направлениям.
+                Lead Board — удобный инструмент, чтобы быстро получать проверенные лиды и не зависеть от рекламных
+                кампаний.”
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2">
+          <div
+            class="wow fadeInUp relative z-10 mb-10 overflow-hidden rounded-[10px] bg-white px-6 py-8 dark:bg-[#131B4D] sm:p-10 md:p-8 xl:p-10"
+            data-wow-delay="0s">
+            <div class="absolute right-0 top-0 z-[-1]">
+              <img src="src/images/shapes/testimonial-shape.svg" alt="shape">
+            </div>
+            <div class="flex items-center mb-8">
+              <div class="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-sm">
+                <img src="src/images/testimonials/image-04.jpg" alt="author">
+              </div>
+              <div class="w-full">
+                <h3 class="mb-1 text-lg font-semibold text-dark dark:text-white">The Tour</h3>
+                <p class="text-sm font-medium text-body-color-2 dark:text-white">Ген. директор</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-base font-medium leading-snug text-body-color-2 dark:text-body-color">
+                “Мы тратим много времени на тестирование рекламы и оптимизацию объявлений. Возможность просто купить
+                готовые, заинтересованные лиды — это сильное преимущество. Lead Board реально экономит ресурсы и
+                ускоряет продажи”
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Testimonial Section end ===== -->
+
+  <!-- ===== Download Section start ===== -->
+  <section id="download" class="py-24">
+    <div class="container">
+      <div class="flex flex-wrap items-center -mx-4">
+        <div class="w-full px-4 lg:w-1/2">
+          <div class="wow fadeInUp mb-12 max-w-[700px] lg:mb-0" data-wow-delay="0s">
+            <!-- <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> Download Our App </span> -->
+            <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Performance Marketing</h2>
+            <p class="mb-10 text-lg font-medium text-body-color-2 dark:text-body-color">
+              Lead Board предлагает бизнесам готовое решение: мы
+              самостоятельно запускаем рекламу, собираем и
+              квалифицируем заявки, после чего предоставляем
+              компаниям только тех лидов, которые проявили реальный
+              интерес к их услугам.
+            </p>
+
+            <div class="flex items-center -mx-3">
+              <div class="px-3">
+                <a href="https://t.me/lead_board_uz"
+                  class="flex items-center justify-center rounded-full border border-[#2D2947] bg-[#2D2947] p-[10px] pr-5 text-base font-semibold text-white hover:bg-[#2D2947]/90 dark:hover:bg-[#2D2947]/90">
+                  <span class="flex items-center justify-center w-10 h-10 mr-3 text-white rounded-full bg-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.1 240.1">
+                      <linearGradient id="Oval_1_" gradientUnits="userSpaceOnUse" x1="-838.041" y1="660.581" x2="-838.041" y2="660.3427" gradientTransform="matrix(1000 0 0 -1000 838161 660581)">
+                      <stop offset="0" style="stop-color:#2AABEE"/>
+                      <stop offset="1" style="stop-color:#229ED9"/>
+                      </linearGradient>
+                      <circle fill-rule="evenodd" clip-rule="evenodd" fill="url(#Oval_1_)" cx="120.1" cy="120.1" r="120.1"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M54.3,118.8c35-15.2,58.3-25.3,70-30.2 c33.3-13.9,40.3-16.3,44.8-16.4c1,0,3.2,0.2,4.7,1.4c1.2,1,1.5,2.3,1.7,3.3s0.4,3.1,0.2,4.7c-1.8,19-9.6,65.1-13.6,86.3 c-1.7,9-5,12-8.2,12.3c-7,0.6-12.3-4.6-19-9c-10.6-6.9-16.5-11.2-26.8-18c-11.9-7.8-4.2-12.1,2.6-19.1c1.8-1.8,32.5-29.8,33.1-32.3 c0.1-0.3,0.1-1.5-0.6-2.1c-0.7-0.6-1.7-0.4-2.5-0.2c-1.1,0.2-17.9,11.4-50.6,33.5c-4.8,3.3-9.1,4.9-13,4.8 c-4.3-0.1-12.5-2.4-18.7-4.4c-7.5-2.4-13.5-3.7-13-7.9C45.7,123.3,48.7,121.1,54.3,118.8z"/>
+                    </svg>
+                  </span>
+                  Telegram
+                </a>
+              </div>
+              <!-- <div class="px-3">
+                <a href="javascript:void(0)"
+                  class="flex items-center justify-center rounded-full border border-[#2D2947] bg-transparent p-[10px] pr-5 text-base font-semibold text-body-color-2 hover:bg-[#2D294710] dark:text-white dark:hover:bg-[#2D2947]">
+                  <span
+                    class="flex items-center justify-center w-10 h-10 mr-3 text-white rounded-full bg-dark dark:bg-white dark:text-dark">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                      <path
+                        d="M3 20.5V3.50002C3 2.91002 3.34 2.39002 3.84 2.15002L13.69 12L3.84 21.85C3.34 21.6 3 21.09 3 20.5ZM16.81 15.12L6.05 21.34L14.54 12.85L16.81 15.12ZM20.16 10.81C20.5 11.08 20.75 11.5 20.75 12C20.75 12.5 20.53 12.9 20.18 13.18L17.89 14.5L15.39 12L17.89 9.50002L20.16 10.81ZM6.05 2.66002L16.81 8.88002L14.54 11.15L6.05 2.66002Z">
+                      </path>
+                    </svg>
+                  </span>
+                  Play Store
+                </a>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full px-4 lg:w-1/2">
+          <div class="relative text-center wow fadeInUp -z-10" data-wow-delay="0s">
+            <img src="src/images/download/app-image.png" alt="app image" style="filter: brightness(0.8);" class="hidden mx-auto text-center dark:block">
+            <img src="src/images/download/app-image-2.png" alt="app image" class="mx-auto dark:hidden">
+
+            <span class="absolute right-0 bottom-0 w-[320px] h-[320px] rounded-full -z-10"
+              style="background: linear-gradient(180deg, rgba(55, 109, 249, 0) 0%, rgba(255, 96, 166, 0.32) 100%); filter: blur(100px)">
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Download Section end ===== -->
+
+  <!-- ===== Faq Section start ===== -->
+  <section id="faq" x-data="
+        {
+          openFaq1: false,
+          openFaq2: false,
+          openFaq3: false,
+          openFaq4: false,
+          openFaq5: false,
+          openFaq6: false,
+          openFaq7: false,
+        }
+      " class="relative z-10 bg-light-bg py-24 dark:bg-[#14102C]">
+    <div class="container">
+      <div class="wow fadeInUp mx-auto mb-16 max-w-[630px] text-center md:mb-20" data-wow-delay="0s">
+        <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> FAQ </span>
+        <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Часто задаваемые
+          вопросы</h2>
+        <p class="mx-auto max-w-[590px] text-lg font-medium text-body-color-2 dark:text-body-color">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed congue arcu, In et dignissim quam
+          condimentum vel.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap justify-center -mx-4">
+        <div class="w-full px-4 lg:w-9/12 xl:w-8/12">
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq1 = !openFaq1" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">Как вы организуете
+                процесс лидогенерации и почему он эффективен?</h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq1 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq1" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Мы занимаемся лидогенерацией не под конкретные бренды, а под сферы деятельности — образование, туризм,
+                недвижимость, услуги и т.д. Это позволяет собирать универсальные заявки, которые могут подойти сразу
+                нескольким компаниям внутри одной ниши.
+              </p>
+            </div>
+          </div>
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq2 = !openFaq2" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">Как вы обеспечиваете
+                стабильный поток лидов?
+              </h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq2 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq2" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Лидогенерация происходит беспрерывно, а объём трафика регулируется в зависимости от спроса и активности
+                покупателей лидов на платформе.
+              </p>
+            </div>
+          </div>
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq3 = !openFaq3" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">Какие каналы вы
+                используете для привлечения лидов?</h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq3 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq3" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Мы используем разнообразные источники трафика — таргетированную рекламу в социальных сетях, контекстную
+                рекламу, Telegram Ads и другие цифровые каналы.
+              </p>
+            </div>
+          </div>
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq4 = !openFaq4" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">Почему компании
+                должны покупать лиды у вас, а не генерировать их сами?</h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq4 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq4" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Самостоятельная лидогенерация требует времени, бюджета и команды специалистов. Lead Board предлагает
+                готовое решение — бизнес платит только за результат, без рисков, экспериментов и дополнительных расходов
+                на рекламу.
+              </p>
+            </div>
+          </div>
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq5 = !openFaq5" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">Как вы проверяете
+                качество лидов?</h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq5 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq5" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Каждый лид проходит трёхэтапную квалификацию через звонок:
+                1️⃣ отвечает на звонок,
+                2️⃣ подтверждает интерес,
+                3️⃣ готов приобрести услугу в ближайшее время.
+                Только такие лиды попадают на платформу.
+              </p>
+            </div>
+          </div>
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq6 = !openFaq6" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">Для кого
+                предназначена платформа?</h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq6 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq6" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Для малого и среднего бизнеса, которому нужны реальные заявки без лишних затрат и ожиданий — учебные
+                центры, агентства недвижимости, турфирмы, клиники, сервисные компании и др.
+              </p>
+            </div>
+          </div>
+          <div class="py-6 mb-10 bg-white rounded-lg single-faq wow fadeInUp px-7 dark:bg-dark md:py-8 md:px-10"
+            data-wow-delay="0s">
+            <button @click="openFaq7 = !openFaq7" class="flex items-center justify-between w-full text-left faq-btn">
+              <h3 class="mr-2 text-base font-bold text-dark dark:text-white sm:text-lg md:text-xl">На каком этапе
+                находится проект сейчас?</h3>
+              <span
+                class="icon inline-flex h-5 w-full max-w-[20px] items-center justify-center rounded-sm bg-body-color-2 text-white dark:text-black dark:bg-body-color text-lg font-semibold"
+                :class="openFaq7 && 'rotate-180' ">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_50_132)">
+                    <path
+                      d="M8.82033 1.91065L4.99951 5.73146L1.17869 1.91064L-0.000488487 3.08978L4.99951 8.08978L9.99951 3.08979L8.82033 1.91065Z"
+                      fill="currentColor"></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_50_132">
+                      <rect width="10" height="10" fill="white" transform="translate(-0.000488281 0.000488281)"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </button>
+            <div x-show="openFaq7" class="faq-content">
+              <p class="pt-6 text-base text-relaxed text-body-color-2 dark:text-body-color">
+                Платформа находится на этапе активной разработки, уже проведены CustDev-интервью с заинтересованными
+                компаниями, протестированы гипотезы и идёт подготовка к первому запуску MVP.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute left-0 -bottom-36 -z-10">
+      <img src="src/images/shapes/faq-shape-1.svg" alt="shape">
+    </div>
+    <div class="absolute right-0 -top-36 -z-10">
+      <img src="src/images/shapes/faq-shape-2.svg" alt="shape">
+    </div>
+  </section>
+  <!-- ===== Faq Section end ===== -->
+
+  <!-- ===== Blog Section start ===== -->
+  <section id="blog" class="pt-[120px] pb-20">
+    <div class="container">
+      <div class="wow fadeInUp mx-auto mb-16 max-w-[590px] text-center md:mb-20" data-wow-delay="0s">
+        <span class="mb-3 text-lg font-bold uppercase text-primary sm:text-xl"> Новости </span>
+        <h2 class="mb-3 text-3xl font-bold leading-tight text-black dark:text-white md:text-[45px]">Новости Lead Board
+        </h2>
+        <p class="text-lg font-medium text-body-color-2 dark:text-body-color">Будьте в курсе новостей и обновлений в
+          проекте Lead Board</p>
+      </div>
+
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mb-10 overflow-hidden rounded-lg bg-light-bg dark:bg-[#14102C]" style="height: -webkit-fill-available;" data-wow-delay="0s">
+            <a href="blog-details.html" class="block">
+              <img src="src/images/blogs/image-01.jpg" style="height: 300px;" alt="blog-image" class="w-full">
+            </a>
+            <div class="p-7 lg:px-6 xl:p-8">
+              <div class="flex items-center mb-2">
+                <p class="flex items-center mr-3 text-body-color-2 dark:text-body-color">
+                  <span class="pr-2 text-dark dark:text-white">
+                    <svg width="22" height="22" viewBox="0 0 22 22" class="fill-current">
+                      <path
+                        d="M11.0001 3.66675C11.9725 3.66675 12.9052 4.05306 13.5928 4.74069C14.2804 5.42832 14.6667 6.36095 14.6667 7.33341C14.6667 8.30587 14.2804 9.2385 13.5928 9.92614C12.9052 10.6138 11.9725 11.0001 11.0001 11.0001C10.0276 11.0001 9.09499 10.6138 8.40736 9.92614C7.71972 9.2385 7.33341 8.30587 7.33341 7.33341C7.33341 6.36095 7.71972 5.42832 8.40736 4.74069C9.09499 4.05306 10.0276 3.66675 11.0001 3.66675ZM11.0001 12.8334C15.0517 12.8334 18.3334 14.4742 18.3334 16.5001V18.3334H3.66675V16.5001C3.66675 14.4742 6.94841 12.8334 11.0001 12.8334Z">
+                      </path>
+                    </svg>
+                  </span>
+                  Админ
+                </p>
+                <p class="flex items-center text-body-color-2 dark:text-body-color">
+                  <span class="pr-2 text-dark dark:text-white">
+                    <svg width="21" height="21" viewBox="0 0 21 21" class="fill-current">
+                      <path
+                        d="M6.125 10.5H7.875V12.25H6.125V10.5ZM18.375 5.25V17.5C18.375 17.9641 18.1906 18.4092 17.8624 18.7374C17.5342 19.0656 17.0891 19.25 16.625 19.25H4.375C3.40375 19.25 2.625 18.4625 2.625 17.5V5.25C2.625 4.78587 2.80937 4.34075 3.13756 4.01256C3.46575 3.68437 3.91087 3.5 4.375 3.5H5.25V1.75H7V3.5H14V1.75H15.75V3.5H16.625C17.0891 3.5 17.5342 3.68437 17.8624 4.01256C18.1906 4.34075 18.375 4.78587 18.375 5.25ZM4.375 7H16.625V5.25H4.375V7ZM16.625 17.5V8.75H4.375V17.5H16.625ZM13.125 12.25V10.5H14.875V12.25H13.125ZM9.625 12.25V10.5H11.375V12.25H9.625ZM6.125 14H7.875V15.75H6.125V14ZM13.125 15.75V14H14.875V15.75H13.125ZM9.625 15.75V14H11.375V15.75H9.625Z">
+                      </path>
+                    </svg>
+                  </span>
+                  24 Сентября, 2025
+                </p>
+              </div>
+
+              <h3>
+                <a href="blog-details.html"
+                  class="block mb-4 text-xl font-bold text-dark hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl lg:text-lg xl:text-2xl">
+                  Разработка дизайна платформы
+                </a>
+              </h3>
+              <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">
+                Мы завершили этап проектирования интерфейса Lead Board — создали современный, интуитивный и удобный
+                дизайн, который делает процесс покупки лидов простым и понятным для бизнеса.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mb-10 overflow-hidden rounded-lg bg-light-bg dark:bg-[#14102C]" style="height: -webkit-fill-available;" data-wow-delay="0s">
+            <a href="blog-details.html" class="block" >
+              <img src="src/images/blogs/image-02.jpg" alt="blog-image" class="w-full" style="height: 300px;">
+            </a>
+            <div class="p-7 lg:px-6 xl:p-8">
+              <div class="flex items-center mb-2">
+                <p class="flex items-center mr-3 text-body-color-2 dark:text-body-color">
+                  <span class="pr-2 text-dark dark:text-white">
+                    <svg width="22" height="22" viewBox="0 0 22 22" class="fill-current">
+                      <path
+                        d="M11.0001 3.66675C11.9725 3.66675 12.9052 4.05306 13.5928 4.74069C14.2804 5.42832 14.6667 6.36095 14.6667 7.33341C14.6667 8.30587 14.2804 9.2385 13.5928 9.92614C12.9052 10.6138 11.9725 11.0001 11.0001 11.0001C10.0276 11.0001 9.09499 10.6138 8.40736 9.92614C7.71972 9.2385 7.33341 8.30587 7.33341 7.33341C7.33341 6.36095 7.71972 5.42832 8.40736 4.74069C9.09499 4.05306 10.0276 3.66675 11.0001 3.66675ZM11.0001 12.8334C15.0517 12.8334 18.3334 14.4742 18.3334 16.5001V18.3334H3.66675V16.5001C3.66675 14.4742 6.94841 12.8334 11.0001 12.8334Z">
+                      </path>
+                    </svg>
+                  </span>
+                  Админ
+                </p>
+                <p class="flex items-center text-body-color-2 dark:text-body-color">
+                  <span class="pr-2 text-dark dark:text-white">
+                    <svg width="21" height="21" viewBox="0 0 21 21" class="fill-current">
+                      <path
+                        d="M6.125 10.5H7.875V12.25H6.125V10.5ZM18.375 5.25V17.5C18.375 17.9641 18.1906 18.4092 17.8624 18.7374C17.5342 19.0656 17.0891 19.25 16.625 19.25H4.375C3.40375 19.25 2.625 18.4625 2.625 17.5V5.25C2.625 4.78587 2.80937 4.34075 3.13756 4.01256C3.46575 3.68437 3.91087 3.5 4.375 3.5H5.25V1.75H7V3.5H14V1.75H15.75V3.5H16.625C17.0891 3.5 17.5342 3.68437 17.8624 4.01256C18.1906 4.34075 18.375 4.78587 18.375 5.25ZM4.375 7H16.625V5.25H4.375V7ZM16.625 17.5V8.75H4.375V17.5H16.625ZM13.125 12.25V10.5H14.875V12.25H13.125ZM9.625 12.25V10.5H11.375V12.25H9.625ZM6.125 14H7.875V15.75H6.125V14ZM13.125 15.75V14H14.875V15.75H13.125ZM9.625 15.75V14H11.375V15.75H9.625Z">
+                      </path>
+                    </svg>
+                  </span>
+                  13 Октября, 2025
+                </p>
+              </div>
+
+              <h3>
+                <a href="blog-details.html"
+                  class="block mb-4 text-xl font-bold text-dark hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl lg:text-lg xl:text-2xl">
+                  Определение маркетинговой стратегии
+                </a>
+              </h3>
+              <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">
+                Команда Lead Board сформировала маркетинговую стратегию, направленную на тестирование гипотез,
+                эффективное привлечение трафика и создание устойчивого потока квалифицированных лидов.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-full px-4 md:w-1/2 lg:w-1/3">
+          <div class="wow fadeInUp mb-10 overflow-hidden rounded-lg bg-light-bg dark:bg-[#14102C]" style="height: -webkit-fill-available;" data-wow-delay="0s">
+            <a href="blog-details.html" class="block">
+              <img src="src/images/blogs/image-03.jpg" alt="blog-image" class="w-full" style="height: 300px;">
+            </a>
+            <div class="p-7 lg:px-6 xl:p-8">
+              <div class="flex items-center mb-2">
+                <p class="flex items-center mr-3 text-body-color-2 dark:text-body-color">
+                  <span class="pr-2 text-dark dark:text-white">
+                    <svg width="22" height="22" viewBox="0 0 22 22" class="fill-current">
+                      <path
+                        d="M11.0001 3.66675C11.9725 3.66675 12.9052 4.05306 13.5928 4.74069C14.2804 5.42832 14.6667 6.36095 14.6667 7.33341C14.6667 8.30587 14.2804 9.2385 13.5928 9.92614C12.9052 10.6138 11.9725 11.0001 11.0001 11.0001C10.0276 11.0001 9.09499 10.6138 8.40736 9.92614C7.71972 9.2385 7.33341 8.30587 7.33341 7.33341C7.33341 6.36095 7.71972 5.42832 8.40736 4.74069C9.09499 4.05306 10.0276 3.66675 11.0001 3.66675ZM11.0001 12.8334C15.0517 12.8334 18.3334 14.4742 18.3334 16.5001V18.3334H3.66675V16.5001C3.66675 14.4742 6.94841 12.8334 11.0001 12.8334Z">
+                      </path>
+                    </svg>
+                  </span>
+                  Админ
+                </p>
+                <p class="flex items-center text-body-color-2 dark:text-body-color">
+                  <span class="pr-2 text-dark dark:text-white">
+                    <svg width="21" height="21" viewBox="0 0 21 21" class="fill-current">
+                      <path
+                        d="M6.125 10.5H7.875V12.25H6.125V10.5ZM18.375 5.25V17.5C18.375 17.9641 18.1906 18.4092 17.8624 18.7374C17.5342 19.0656 17.0891 19.25 16.625 19.25H4.375C3.40375 19.25 2.625 18.4625 2.625 17.5V5.25C2.625 4.78587 2.80937 4.34075 3.13756 4.01256C3.46575 3.68437 3.91087 3.5 4.375 3.5H5.25V1.75H7V3.5H14V1.75H15.75V3.5H16.625C17.0891 3.5 17.5342 3.68437 17.8624 4.01256C18.1906 4.34075 18.375 4.78587 18.375 5.25ZM4.375 7H16.625V5.25H4.375V7ZM16.625 17.5V8.75H4.375V17.5H16.625ZM13.125 12.25V10.5H14.875V12.25H13.125ZM9.625 12.25V10.5H11.375V12.25H9.625ZM6.125 14H7.875V15.75H6.125V14ZM13.125 15.75V14H14.875V15.75H13.125ZM9.625 15.75V14H11.375V15.75H9.625Z">
+                      </path>
+                    </svg>
+                  </span>
+                  20 Октября, 2025
+                </p>
+              </div>
+
+              <h3>
+                <a href="blog-details.html"
+                  class="block mb-4 text-xl font-bold text-dark hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl lg:text-lg xl:text-2xl">
+                  Начало разработки платформы
+                </a>
+              </h3>
+              <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">
+                Мы официально запустили процесс разработки Lead Board — платформы, которая объединит бизнесы и готовых
+                клиентов в одной экосистеме. Уже скоро пользователи смогут покупать проверенные лиды напрямую.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Blog Section end ===== -->
+
+  <!-- ===== Contact Section start ===== -->
+  <section id="contact" class="bg-light-bg py-[120px] dark:bg-[#14102C]">
+    <div class="container">
+      <div class="flex flex-wrap items-center -mx-4">
+        <div class="w-full px-4 lg:w-7/12">
+          <div class="wow fadeInUp mb-16" data-wow-delay="0s">
+            <span class="mb-5 text-lg font-bold uppercase text-primary sm:text-xl"> Связаться с нами </span>
+            <h2 class="mb-3 text-2xl text-dark dark:text-white">Вопросы, Предложения, Партнерства, Инвестиции</h2>
+          </div>
+
+          <div class="flex flex-wrap -mx-4">
+            <div class="w-full px-4 sm:w-1/2">
+              <div class="wow fadeInUp mb-11 max-w-[250px]" data-wow-delay="0s">
+                <h3 class="mb-4 text-lg font-semibold text-dark dark:text-white">Наша локация</h3>
+                <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">г. Ташкент,
+                  Чиланзар, ул. Чапаната 8</p>
+              </div>
+            </div>
+            <div class="w-full px-4 sm:w-1/2">
+              <div class="wow fadeInUp mb-11 max-w-[250px]" data-wow-delay="0s">
+                <h3 class="mb-4 text-lg font-semibold text-dark dark:text-white">Почта</h3>
+                <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">
+                  info@lead-board.uz<a href="/cdn-cgi/l/email-protection" class="__cf_email__"></a></p>
+              </div>
+            </div>
+            <div class="w-full px-4 sm:w-1/2">
+              <div class="wow fadeInUp mb-11 max-w-[250px]" data-wow-delay="0s">
+                <h3 class="mb-4 text-lg font-semibold text-dark dark:text-white">Номер телефона</h3>
+                <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">+998 97 100 3021
+                </p>
+                <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">+998 20 007 0433
+                </p>
+              </div>
+            </div>
+            <div class="w-full px-4 sm:w-1/2">
+              <div class="wow fadeInUp mb-11 max-w-[250px]" data-wow-delay="0s">
+                <h3 class="mb-4 text-lg font-semibold text-dark dark:text-white">Как с нами связаться?</h3>
+                <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">Оставьте короткую
+                  заявку с вашим предложением или вопросом — и мы обязательно свяжемся с вами.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full px-4 lg:w-5/12">
+          <div class="px-8 py-12 bg-white rounded-md sm:14 wow fadeInUp dark:bg-dark" data-wow-delay="0s">
+
+
+
+            <h3 class="mb-8 text-2xl font-bold text-dark dark:text-white sm:text-[34px] lg:text-2xl xl:text-[34px]">
+              Оставить заявку</h3>
+
+            <script>
+              window.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("ariza");
+                const phoneInput = document.getElementById("phoneNumb");
+                phoneInput.value = "+998";
+
+                function validatePhoneInput() {
+                    let value = phoneInput.value;
+
+                    value = value.replace(/[^0-9]/g, "");
+
+                    if (!value.startsWith("998")) {
+                        value = "998" + value;
+                    }
+
+                    if (value.length > 12) {
+                        value = value.slice(0, 12);
+                    }
+
+                    phoneInput.value = "+" + value;
+                }
+
+                phoneInput.addEventListener("input", () => {validatePhoneInput();});
+
+                form.addEventListener("submit", function (e) {
+                  e.preventDefault();
+                  
+                  const name = document.getElementById("name").value;
+                  const phone = document.getElementById("phoneNumb").value;
+                  const message = document.getElementById("message").value;1
+
+                  if(!name || !phone) {
+                    toastifyCheck("Пожалуйста, заполните имя и номер телефона.");
+                    return;
+                  }
+
+                  if (phone.length < 13) {
+                    showPhoneErrorToast();
+                    return;
+                  }
+
+                  const telegramToken = "8409077288:AAFWvkLXdT3GKvH9nNKDvnxN3iXgRTdFaB4"; // replace with your bot token
+                  const chatId = "-4928265674"; // replace with your chat id
+                  const text = `Новое сообщение с сайта Lead Board:
+Имя: ${name}
+Телефон: ${phone}
+Сообщение: ${message}`; // message text
+
+                  fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      chat_id: chatId,
+                      text: text
+                    })
+                  })
+                  .then(response => {
+                    if (response.ok) {
+                      showSuccessToast();
+                      form.reset();
+                    } else {
+                      showErrorToast();
+                    }
+                  })
+                  .catch(error => {
+                    console.error("Ошибка:", error);
+                    alert("Ошибка при отправке сообщения.");
+                  });
+                });
+              });
+            </script>  
+
+            <form id="ariza">
+              <div class="mb-5">
+                <label for="name" class="block mb-2 text-sm font-medium text-dark dark:text-white"> Полное имя* </label>
+
+                <input type="text" id="name" placeholder="Введите ФИО"
+                  class="w-full rounded-md border border-[#E9E9E9]/50 py-3 px-5 text-base font-medium text-body-color outline-hidden focus:border-primary dark:border-[#E9E9E9]/20 dark:bg-white/5">
+              </div>
+              <div class="mb-5">
+                <label for="phoneNumb" oninput="validatePhoneInput()" class="block mb-2 text-sm font-medium text-dark dark:text-white"> Номер телефона*
+                </label>
+
+                <input type="tel" id="phoneNumb" placeholder="Ваш номер"
+                  class="w-full rounded-md border border-[#E9E9E9]/50 py-3 px-5 text-base font-medium text-body-color outline-hidden focus:border-primary dark:border-[#E9E9E9]/20 dark:bg-white/5">
+              </div>
+              <div class="mb-5">
+                <label for="message" class="block mb-2 text-sm font-medium text-dark dark:text-white"> Сообщение
+                </label>
+
+                <textarea rows="6" id="message" placeholder="Напишите свое предложение или вопрос"
+                  class="w-full rounded-md border border-[#E9E9E9]/50 py-3 px-5 text-base font-medium text-body-color outline-hidden focus:border-primary dark:border-[#E9E9E9]/20 dark:bg-white/5"></textarea>
+              </div>
+              <div>
+                <button
+                  class="w-full p-3 text-base font-semibold text-center text-white rounded-full bg-primary hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-primary/90">
+                  Отправить
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Contact Section end ===== -->
+
+  <!-- ===== Newsletter Section start ===== -->
+  <!-- <section id="newsletter" class="relative z-10">
+    <div class="absolute top-0 left-0 -z-10 h-[120px] w-full bg-light-bg dark:bg-[#14102C]"></div>
+    <div class="container">
+      <div class="relative z-10 p-8 overflow-hidden rounded-sm wow fadeInUp bg-dark sm:p-12" data-wow-delay="0s">
+        <div class="flex flex-wrap items-center -mx-4">
+          <div class="w-full px-4 lg:w-1/2">
+            <div class="mb-10 lg:mb-0">
+              <div class="max-w-[500px]">
+                <h2 class="mb-2 text-3xl font-bold leading-tight text-white md:text-[45px]">Newsletter</h2>
+                <p class="text-lg font-medium text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+                  vitae quam nec ante aliquet fringilla vel at erat.</p>
+              </div>
+            </div>
+          </div>
+          <div class="w-full px-3 lg:w-1/2">
+            <div>
+              <form class="relative">
+                <input type="email" placeholder="Enter email address"
+                  class="w-full px-10 py-5 text-base font-medium bg-white border border-transparent rounded-full text-body-color-2 outline-hidden dark:text-body-color sm:pr-24">
+                <button
+                  class="right-[10px] top-1/2 mt-5 inline-flex h-12 items-center rounded-full bg-primary px-7 text-base font-medium text-white hover:bg-primary/90 sm:absolute sm:mt-0 sm:-translate-y-1/2">
+                  Submit
+                  <span class="pl-1">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.67496 17.5L19.1666 10L1.67496 2.5L1.66663 8.33333L14.1666 10L1.66663 11.6667L1.67496 17.5Z"
+                        fill="white"></path>
+                    </svg>
+                  </span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute top-0 right-0 -z-10">
+          <img src="src/images/shapes/newsletter-shape.svg" alt="shape">
+        </div>
+      </div>
+    </div>
+  </section> -->
+  <!-- ===== Newsletter Section end ===== -->
+
+  <!-- ===== Footer start ===== -->
+  <footer class="relative z-10 pt-[120px]">
+    <div class="container">
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-4/12">
+          <div class="wow fadeInUp mb-14 max-w-[330px] xl:mb-20" data-wow-delay="0s">
+            <a href="index.html" class="inline-block mb-6">
+              <img src="src/images/logo/logo-white.png" alt="logo" class="hidden dark:block">
+              <img src="src/images/logo/logo.png" alt="logo" class="dark:hidden">
+            </a>
+            <p class="mb-10 text-base font-medium text-body-color-2 dark:text-body-color">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae quam nec ante fringilla vel at erat
+              convallis elit.
+            </p>
+            <div class="flex items-center space-x-3">
+              <a href="javascript:void(0)"
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-light-bg text-body-color-2 hover:bg-primary hover:text-white dark:bg-dark dark:text-white dark:hover:bg-primary"
+                name="social-link" aria-label="social-link">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M8.25 8.46875C7.6875 8.46875 7.28125 8.96875 7.28125 9.53125C7.28125 10.0938 7.71875 10.5938 8.25 10.5938C8.8125 10.5938 9.21875 10.125 9.21875 9.53125C9.25 8.9375 8.8125 8.46875 8.25 8.46875Z"
+                    fill="currentColor"></path>
+                  <path
+                    d="M11.75 10.5625C12.285 10.5625 12.7187 10.0868 12.7187 9.5C12.7187 8.9132 12.285 8.4375 11.75 8.4375C11.215 8.4375 10.7812 8.9132 10.7812 9.5C10.7812 10.0868 11.215 10.5625 11.75 10.5625Z"
+                    fill="currentColor"></path>
+                  <path
+                    d="M16.4687 0.3125H3.53125C2.4375 0.3125 1.53125 1.1875 1.53125 2.28125V15.375C1.53125 16.4688 2.40625 17.3438 3.5 17.3438H14.4687L13.9375 15.5938L15.1562 16.75L16.3437 17.8437L18.4062 19.6875V2.28125C18.5 1.1875 17.5625 0.3125 16.4687 0.3125ZM12.7187 12.9375C12.7187 12.9375 12.375 12.5313 12.0625 12.1563C13.3437 11.8125 13.8125 11 13.8125 11C13.4062 11.25 13.0312 11.4375 12.7187 11.5625C12.25 11.7812 11.75 11.9062 11.3125 11.9687C10.375 12.1562 9.5625 12.0937 8.8125 11.9687C8.25 11.875 7.8125 11.7188 7.40625 11.5625C7.1875 11.4687 6.90625 11.375 6.6875 11.25C6.65625 11.25 6.65625 11.2188 6.59375 11.2188C6.59375 11.2188 6.5625 11.2187 6.5625 11.1875C6.375 11.0937 6.3125 11 6.3125 11C6.3125 11 6.8125 11.7813 8.03125 12.1563C7.71875 12.5 7.375 12.9375 7.375 12.9375C5.21875 12.8438 4.4375 11.5 4.4375 11.5C4.4375 8.375 5.84375 5.875 5.84375 5.875C7.25 4.8125 8.5625 4.875 8.5625 4.875L8.65625 5C6.875 5.46875 6.09375 6.25 6.09375 6.25C6.09375 6.25 6.3125 6.125 6.65625 6C7.71875 5.5625 8.5 5.4375 8.84375 5.375C8.875 5.375 8.9375 5.375 9.03125 5.375C9.59375 5.28125 10.3125 5.28125 10.9687 5.375C11.9062 5.46875 12.875 5.78125 13.875 6.3125C13.875 6.3125 13.125 5.59375 11.4375 5.09375L11.5625 4.90625C11.5625 4.90625 12.875 4.875 14.2812 5.90625C14.2812 5.90625 15.6875 8.40625 15.6875 11.5313C15.7187 11.5 14.875 12.9063 12.7187 12.9375Z"
+                    fill="currentColor"></path>
+                </svg>
+              </a>
+              <a href="javascript:void(0)"
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-light-bg text-body-color-2 hover:bg-primary hover:text-white dark:bg-dark dark:text-white dark:hover:bg-primary"
+                name="social-link" aria-label="social-link">
+                <svg width="18" height="15" viewBox="0 0 18 15" class="fill-current">
+                  <path
+                    d="M17.7165 2.00016C17.0749 2.29183 16.3832 2.4835 15.6665 2.57516C16.3999 2.1335 16.9665 1.4335 17.2332 0.591829C16.5415 1.0085 15.7749 1.30016 14.9665 1.46683C14.3082 0.750163 13.3832 0.333496 12.3332 0.333496C10.3749 0.333496 8.77487 1.9335 8.77487 3.9085C8.77487 4.19183 8.8082 4.46683 8.86654 4.72516C5.89987 4.57516 3.2582 3.15016 1.49987 0.991829C1.19154 1.51683 1.01654 2.1335 1.01654 2.7835C1.01654 4.02516 1.64154 5.12516 2.6082 5.75016C2.01654 5.75016 1.46654 5.5835 0.983203 5.3335C0.983203 5.3335 0.983203 5.3335 0.983203 5.3585C0.983203 7.09183 2.21654 8.54183 3.84987 8.86683C3.54987 8.95016 3.2332 8.99183 2.9082 8.99183C2.6832 8.99183 2.4582 8.96683 2.24154 8.92516C2.69154 10.3335 3.99987 11.3835 5.57487 11.4085C4.3582 12.3752 2.81654 12.9418 1.1332 12.9418C0.84987 12.9418 0.566536 12.9252 0.283203 12.8918C1.86654 13.9085 3.74987 14.5002 5.76654 14.5002C12.3332 14.5002 15.9415 9.05016 15.9415 4.32516C15.9415 4.16683 15.9415 4.01683 15.9332 3.8585C16.6332 3.3585 17.2332 2.72516 17.7165 2.00016Z">
+                  </path>
+                </svg>
+              </a>
+              <a href="javascript:void(0)"
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-light-bg text-body-color-2 hover:bg-primary hover:text-white dark:bg-dark dark:text-white dark:hover:bg-primary"
+                name="social-link" aria-label="social-link">
+                <svg width="16" height="16" viewBox="0 0 16 16" class="fill-current">
+                  <path
+                    d="M13.8333 0.5C14.2754 0.5 14.6993 0.675595 15.0118 0.988155C15.3244 1.30072 15.5 1.72464 15.5 2.16667V13.8333C15.5 14.2754 15.3244 14.6993 15.0118 15.0118C14.6993 15.3244 14.2754 15.5 13.8333 15.5H2.16667C1.72464 15.5 1.30072 15.3244 0.988155 15.0118C0.675595 14.6993 0.5 14.2754 0.5 13.8333V2.16667C0.5 1.72464 0.675595 1.30072 0.988155 0.988155C1.30072 0.675595 1.72464 0.5 2.16667 0.5H13.8333ZM13.4167 13.4167V9C13.4167 8.27949 13.1304 7.5885 12.621 7.07903C12.1115 6.56955 11.4205 6.28333 10.7 6.28333C9.99167 6.28333 9.16667 6.71667 8.76667 7.36667V6.44167H6.44167V13.4167H8.76667V9.30833C8.76667 8.66667 9.28333 8.14167 9.925 8.14167C10.2344 8.14167 10.5312 8.26458 10.75 8.48338C10.9688 8.70217 11.0917 8.99891 11.0917 9.30833V13.4167H13.4167ZM3.73333 5.13333C4.10464 5.13333 4.46073 4.98583 4.72328 4.72328C4.98583 4.46073 5.13333 4.10464 5.13333 3.73333C5.13333 2.95833 4.50833 2.325 3.73333 2.325C3.35982 2.325 3.0016 2.47338 2.73749 2.73749C2.47338 3.0016 2.325 3.35982 2.325 3.73333C2.325 4.50833 2.95833 5.13333 3.73333 5.13333ZM4.89167 13.4167V6.44167H2.58333V13.4167H4.89167Z">
+                  </path>
+                </svg>
+              </a>
+              <a href="javascript:void(0)"
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-light-bg text-body-color-2 hover:bg-primary hover:text-white dark:bg-dark dark:text-white dark:hover:bg-primary"
+                name="social-link" aria-label="social-link">
+                <svg width="18" height="12" viewBox="0 0 18 12" class="fill-current">
+                  <path
+                    d="M7.33366 8.49984L11.6587 5.99984L7.33366 3.49984V8.49984ZM16.967 1.97484C17.0753 2.3665 17.1503 2.8915 17.2003 3.55817C17.2587 4.22484 17.2837 4.79984 17.2837 5.29984L17.3337 5.99984C17.3337 7.82484 17.2003 9.1665 16.967 10.0248C16.7587 10.7748 16.2753 11.2582 15.5253 11.4665C15.1337 11.5748 14.417 11.6498 13.317 11.6998C12.2337 11.7582 11.242 11.7832 10.3253 11.7832L9.00033 11.8332C5.50866 11.8332 3.33366 11.6998 2.47533 11.4665C1.72533 11.2582 1.24199 10.7748 1.03366 10.0248C0.925326 9.63317 0.850326 9.10817 0.800326 8.44151C0.741992 7.77484 0.716992 7.19984 0.716992 6.69984L0.666992 5.99984C0.666992 4.17484 0.800326 2.83317 1.03366 1.97484C1.24199 1.22484 1.72533 0.741504 2.47533 0.533171C2.86699 0.424837 3.58366 0.349837 4.68366 0.299837C5.76699 0.241504 6.75866 0.216504 7.67533 0.216504L9.00033 0.166504C12.492 0.166504 14.667 0.299837 15.5253 0.533171C16.2753 0.741504 16.7587 1.22484 16.967 1.97484Z">
+                  </path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-4/12 xl:w-2/12">
+          <div class="wow fadeInUp mb-14 xl:mb-20" data-wow-delay="0s">
+            <h2 class="mb-5 text-2xl font-bold text-black dark:text-white">Quick Links</h2>
+            <div class="space-y-3">
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                What is ico </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Roadmap </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Whitepaper </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Social Network </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Join Us Now </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-4/12 xl:w-2/12">
+          <div class="wow fadeInUp mb-14 xl:mb-20" data-wow-delay="0s">
+            <h2 class="mb-5 text-2xl font-bold text-black dark:text-white">Supports</h2>
+            <div class="space-y-3">
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Setting & Privacy </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Help & Support </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                Terms & Conditions </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                24/7 Supports </a>
+              <a href="javascript:void(0)"
+                class="block text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                On Point FAQ </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full px-4 md:w-1/2 lg:w-1/2 xl:w-4/12">
+          <div class="wow fadeInUp mb-14 xl:mb-20" data-wow-delay="0s">
+            <h2 class="mb-5 text-2xl font-bold text-black dark:text-white">News & Post</h2>
+            <div class="space-y-3">
+              <div class="flex">
+                <div class="mr-5 h-[75px] w-full max-w-[75px] rounded-md">
+                  <img src="src/images/footer/blog-01.jpg" alt="post"
+                    class="object-cover object-center w-full h-full rounded-md">
+                </div>
+                <div>
+                  <a href="javascript:void(0)"
+                    class="text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                    Roll Out New Features Without Hurting Loyal Users
+                  </a>
+                  <p class="flex items-center">
+                    <span class="pr-1 text-body-color-2 dark:text-body-color">
+                      <svg width="14" height="16" viewBox="0 0 14 16" class="fill-current">
+                        <path
+                          d="M3.25 8H4.75V9.5H3.25V8ZM13.75 3.5V14C13.75 14.3978 13.592 14.7794 13.3107 15.0607C13.0294 15.342 12.6478 15.5 12.25 15.5H1.75C0.9175 15.5 0.25 14.825 0.25 14V3.5C0.25 3.10218 0.408035 2.72064 0.68934 2.43934C0.970644 2.15804 1.35218 2 1.75 2H2.5V0.5H4V2H10V0.5H11.5V2H12.25C12.6478 2 13.0294 2.15804 13.3107 2.43934C13.592 2.72064 13.75 3.10218 13.75 3.5ZM1.75 5H12.25V3.5H1.75V5ZM12.25 14V6.5H1.75V14H12.25ZM9.25 9.5V8H10.75V9.5H9.25ZM6.25 9.5V8H7.75V9.5H6.25ZM3.25 11H4.75V12.5H3.25V11ZM9.25 12.5V11H10.75V12.5H9.25ZM6.25 12.5V11H7.75V12.5H6.25Z">
+                        </path>
+                      </svg>
+                    </span>
+                    <span class="text-sm font-medium text-body-color-2 dark:text-body-color"> Dec 18, 2025 </span>
+                  </p>
+                </div>
+              </div>
+              <div class="flex">
+                <div class="mr-5 h-[75px] w-full max-w-[75px] rounded-md">
+                  <img src="src/images/footer/blog-02.jpg" alt="post"
+                    class="object-cover object-center w-full h-full rounded-md">
+                </div>
+                <div>
+                  <a href="javascript:void(0)"
+                    class="text-base font-medium text-body-color-2 hover:text-primary dark:text-body-color dark:hover:text-primary">
+                    Top 10 Best Cryptocurrency Blogs and Websites
+                  </a>
+                  <p class="flex items-center">
+                    <span class="pr-1 text-body-color-2 dark:text-body-color">
+                      <svg width="14" height="16" viewBox="0 0 14 16" class="fill-current">
+                        <path
+                          d="M3.25 8H4.75V9.5H3.25V8ZM13.75 3.5V14C13.75 14.3978 13.592 14.7794 13.3107 15.0607C13.0294 15.342 12.6478 15.5 12.25 15.5H1.75C0.9175 15.5 0.25 14.825 0.25 14V3.5C0.25 3.10218 0.408035 2.72064 0.68934 2.43934C0.970644 2.15804 1.35218 2 1.75 2H2.5V0.5H4V2H10V0.5H11.5V2H12.25C12.6478 2 13.0294 2.15804 13.3107 2.43934C13.592 2.72064 13.75 3.10218 13.75 3.5ZM1.75 5H12.25V3.5H1.75V5ZM12.25 14V6.5H1.75V14H12.25ZM9.25 9.5V8H10.75V9.5H9.25ZM6.25 9.5V8H7.75V9.5H6.25ZM3.25 11H4.75V12.5H3.25V11ZM9.25 12.5V11H10.75V12.5H9.25ZM6.25 12.5V11H7.75V12.5H6.25Z">
+                        </path>
+                      </svg>
+                    </span>
+                    <span class="text-sm font-medium text-body-color-2 dark:text-body-color"> Dec 18, 2025 </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wow fadeInUp border-t border-[#F3F4F4] py-7 text-center dark:border-[#2D2C4A]" data-wow-delay="0s">
+        <p class="text-base font-medium leading-loose text-body-color-2 dark:text-body-color">
+          © LeadBoard 2025. Made with ❤️  
+        </p>
+      </div>
+    </div>
+
+    <div class="absolute top-0 left-0 -z-10">
+      <img src="src/images/shapes/footer-shape-2.svg" alt="shape">
+    </div>
+
+    <div class="absolute bottom-0 right-0 -z-10">
+      <img src="src/images/shapes/footer-shape-1.svg" alt="shape">
+    </div>
+  </footer>
+  <!-- ===== Footer end ===== -->
+
+  <!-- ====== Back To Top Start -->
+  <a x-show="scrolledFromTop" href="javascript:void(0)" name="scrollToTop" aria-label="scrollToTop"
+    class="fixed left-auto flex items-center justify-center w-10 h-10 text-white transition rounded-lg shadow-md hover:shadow-signUp back-to-top bottom-8 right-8 z-999 bg-primary">
+    <span class="mt-[6px] h-3 w-3 rotate-45 border-t border-l border-white"></span>
+  </a>
+  <!-- ====== Back To Top End -->
+
+  <!-- ===== JS Files ====== -->
+  <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+    // ==== for menu scroll
+    const pageLink = document.querySelectorAll(".scroll-menu");
+
+    pageLink.forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector(elem.getAttribute("href")).scrollIntoView({
+          behavior: "smooth",
+          offsetTop: 1 - 60,
+        });
+      });
+    });
+
+    // section menu active
+    function onScroll(event) {
+      const sections = document.querySelectorAll(".scroll-menu");
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+      for (let i = 0; i < sections.length; i++) {
+        const currLink = sections[i];
+        const val = currLink.getAttribute("href");
+        const refElement = document.querySelector(val);
+        const scrollTopMinus = scrollPos + 73;
+        if (refElement.offsetTop <= scrollTopMinus && refElement.offsetTop + refElement.offsetHeight > scrollTopMinus) {
+          document.querySelector(".scroll-menu").classList.remove("dark:text-white", "text-primary");
+          currLink.classList.add("dark:text-white", "text-primary");
+        } else {
+          currLink.classList.remove("dark:text-white", "text-primary");
+        }
+      }
+    }
+
+    window.document.addEventListener("scroll", onScroll);
+  </script>
+  <script defer="" src="bundle.js"></script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9922c8972fce6633',t:'MTc2MTA3MDk3OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+  <script defer=""
+    src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+    data-cf-beacon="{"
+    version":"2024.11.0","token":"9a6015d415bb4773a0bff22543062d3b","r":1,"server_timing":{"name":{"cfcachestatus":true,"cfedge":true,"cfextpri":true,"cfl4":true,"cforigin":true,"cfspeedbrain":true},"location_startswith":null}}"=""
+    crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+
+</html>
